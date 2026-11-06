@@ -6,16 +6,15 @@ Aswin Sreeraj's journey is characterized by continuous learning, transitioning f
 - **Focus**: High-throughput distributed backend engineering roles focusing on Go, microservices, high-volume transactions, and AI agent platforms.
 - **Looking For**: Teams solving challenging scaling, consistency, and reliability problems.
 
-## 2024 - Present: Current Focus
-- **Focus**: Distributed Systems, High-Concurrency Go Services, Reliable AI Orchestration.
-- **Key Work**: Building ARDA (Auditable, Reliable, Durable Agents with Temporal), Tenome (distributed crawler with Redis frontier), and contributing to open-source Go ecosystems (ORAS).
-- **Core Technologies**: Go, PostgreSQL, pgvector, Temporal, Apache Kafka, Redis, Docker.
-
-## 2025 - Present: Brototype
-- **Role**: Backend Engineering Lead Trainee
-- **Achievement**: Graduated as **Overall Best Performer** in a rigorous, competitive software engineering program.
-- **Focus**: Clean Architecture, domain-driven design, concurrent microservices, distributed locking with Redis, Kafka streaming, and production deployment.
-- **Key Projects**: EVNTX (event booking platform with financial wallet ledger), Tenome (search engine).
+## 2024 - Present: Software Engineering Program (Go & Backend) · Brototype
+- **Role**: Backend Engineering Trainee & Lead Developer
+- **Achievement**: Awarded **Overall Best Performer** in a rigorous, competitive software engineering program for academic excellence, technical execution, and community contributions.
+- **Focus**: Clean Architecture, Go concurrency primitives, distributed systems, relational transaction ledgers, Redis distributed locking, Kafka event streaming, and reliable workflow orchestration.
+- **Key Projects Engineered within Brototype**:
+  - **ARDA**: AI agent execution & governance platform with Temporal durable workflows and pgvector embeddings.
+  - **EVNTX**: High-concurrency event ticketing platform preventing double-booking via optimistic locking and a multi-party PostgreSQL ledger.
+  - **Tenome**: Concurrent web crawler and inverted index search engine in Go decoupled via Kafka message streams.
+- **Core Technologies**: Go, PostgreSQL, pgvector, Temporal, Apache Kafka, Redis, Docker, MCP, Clean Architecture, gRPC.
 
 ## 2023 - 2024: Fanshawe College
 - **Program**: Postgraduate Diploma in Practical Elements of Mechanical and Embedded Systems
