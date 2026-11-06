@@ -1,0 +1,52 @@
+version: '3.8'
+
+services:
+  rag-postgres:
+    image: pgvector/pgvector:pg16
+    container_name: portfolio-rag-postgres
+    restart: unless-stopped
+    environment:
+      POSTGRES_DB: portfolio_rag
+      POSTGRES_USER: portfolio_user
+      POSTGRES_PASSWORD: portfolio_secure_password
+    ports:
+      - "5434:5432"
+    volumes:
+      - rag_pgdata:/var/lib/postgresql/data
+    healthcheck:
+      test: ["CMD-SHELL", "pg_isready -U portfolio_user -d portfolio_rag"]
+      interval: 5s
+      timeout: 5s
+      retries: 5
+
+  backend:
+    build:
+      context: .
+      dockerfile: Dockerfile
+    container_name: portfolio-rag-backend
+    restart: unless-stopped
+    depends_on:
+      rag-postgres:
+        condition: service_healthy
+    environment:
+      PORT: 8080
+      POSTGRES_HOST: rag-postgres
+      POSTGRES_PORT: 5432
+      POSTGRES_USER: portfolio_user
+      POSTGRES_PASSWORD: portfolio_secure_password
+      POSTGRES_DB: portfolio_rag
+      POSTGRES_SSLMODE: disable
+      LLM_PROVIDER: fallback
+      EMBEDDING_PROVIDER: fallback
+      GEMINI_API_KEY: ${GEMINI_API_KEY:-}
+      OPENAI_API_KEY: ${OPENAI_API_KEY:-}
+      KNOWLEDGE_DIR: /app/knowledge
+      RATE_LIMIT_RPM: 60
+    ports:
+      - "8080:8080"
+    volumes:
+      - ./knowledge:/app/knowledge:ro
+
+volumes:
+  rag_pgdata:
+
