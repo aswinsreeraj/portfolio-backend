@@ -9,12 +9,12 @@ Aswin Sreeraj's journey is characterized by continuous learning, transitioning f
 ## 2024 - Present: Software Engineering Program (Go & Backend) · Brototype
 - **Role**: Backend Engineering Trainee & Lead Developer
 - **Achievement**: Awarded **Overall Best Performer** in a rigorous, competitive software engineering program for academic excellence, technical execution, and community contributions.
-- **Focus**: Clean Architecture, Go concurrency primitives, distributed systems, relational transaction ledgers, Redis distributed locking, Kafka event streaming, and reliable workflow orchestration.
+- **Focus**: Clean Architecture, Go concurrency primitives, distributed systems, relational escrow ledgers, bounded worker pools, Kafka/Redpanda event streaming, and reliable workflow orchestration.
 - **Key Projects Engineered within Brototype**:
-  - **ARDA**: AI agent execution & governance platform with Temporal durable workflows and pgvector embeddings.
-  - **EVNTX**: High-concurrency event ticketing platform preventing double-booking via optimistic locking and a multi-party PostgreSQL ledger.
-  - **Tenome**: Concurrent web crawler and inverted index search engine in Go decoupled via Kafka message streams.
-- **Core Technologies**: Go, PostgreSQL, pgvector, Temporal, Apache Kafka, Redis, Docker, MCP, Clean Architecture, gRPC.
+  - **ARDA**: Multi-tenant AI agent control plane & reliability gate (Go + Python) with Temporal durable workflows, Vault KV v2 BYOK custody, 10-step MCP tool guardrails, and `pgvector` HNSW gating.
+  - **EVNTX**: Multi-role event ticketing & escrow wallet platform preventing overselling via optimistic CAS, `FOR UPDATE` locks, and automatic Razorpay late-capture refunds.
+  - **Tenome Micro**: 4-service Go/gRPC/Kafka microservices platform combining crawl workers, Dragonfly cache, SQLite persistence, Ollama inference, DLT retries, and full OTel tracing.
+- **Core Technologies**: Go, Python, PostgreSQL, pgvector, SQLite, Temporal, Apache Kafka, Redpanda, Dragonfly / Redis, HashiCorp Vault, Ollama, OpenTelemetry, Kubernetes, Docker, MCP, Clean Architecture, gRPC.
 
 ## 2023 - 2024: Fanshawe College
 - **Program**: Postgraduate Diploma in Practical Elements of Mechanical and Embedded Systems
