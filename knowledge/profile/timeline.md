@@ -16,11 +16,11 @@ Aswin Sreeraj's journey is characterized by continuous learning, transitioning f
   - **Tenome Micro**: 4-service Go/gRPC/Kafka microservices platform combining crawl workers, Dragonfly cache, SQLite persistence, Ollama inference, DLT retries, and full OTel tracing.
 - **Core Technologies**: Go, Python, PostgreSQL, `pgvector`, SQLite, MongoDB, Temporal, Apache Kafka, Redpanda, Dragonfly / Redis, HashiCorp Vault, Ollama, OpenTelemetry, Kubernetes, Helm, Docker, React, TypeScript, Clean Architecture, gRPC, GraphQL.
 
-## 2023 - 2024: Fanshawe College
-- **Program**: Postgraduate Diploma in Practical Elements of Mechanical and Embedded Systems
+## Jan 2023 - Aug 2024: Fanshawe College
+- **Program**: Ontario College Graduate Certificate, Electronics & Embedded Systems
 - **Location**: London, Ontario, Canada
-- **Academic Standing**: Graduated with **GPA 4.2 / 4.2** (Dean's Honour Roll).
-- **Key Focus**: Embedded C, microcontroller programming, real-time operating concepts, hardware-software interfacing, sensor telemetry.
+- **Academic Standing**: **President's Honour Roll & Dean's Honour Roll** (four terms; term GPAs `4.04–4.2 / 4.2`).
+- **Key Focus**: Primary focus on **PIC microchips** and **Embedded C programming**, covering Operating Systems, Systems Programming, RTOS, Embedded Network Protocols, Digital Logic, Telecommunications, and Web Interfaces for HMI (with brief beginner exposure to Vue.js and React Native).
 
 ## 2022: Amazon
 - **Role**: Senior Compliance Associate / Quality Analyst
