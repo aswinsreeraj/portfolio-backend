@@ -1,28 +1,55 @@
 # Project: ARDA (Auditable, Reliable, Durable Agents)
 
 - **ID**: `arda`
-- **Tagline**: AI Agent Execution & Governance Platform
-- **Status**: In Progress
-- **Key Metrics**: P99 Latency 18ms | Sustained Load 1,200 rps | Failure Recovery 100%
-- **GitHub**: https://github.com/aswin/arda
-- **Demo / Docs**: https://arda.dev
+- **Tagline**: Multi-Tenant AI Agent Control Plane, Durable Execution Engine & Evidence-Based Reliability Gate
+- **Status**: In Progress (Core control plane, execution governance, Vault BYOK, Temporal workflows, and `pgvector` HNSW reliability gate implemented & tested; production K8s manifests, standalone review/audit consumers, and cross-repo production wiring in progress)
+- **GitHub Repositories**:
+  - Go Platform (`arda`): https://github.com/aswinsreeraj/arda
+  - Python Reliability Gate (`arda-reliability-service`): https://github.com/aswinsreeraj/arda-reliability-service
+- **Core Stack**: Go 1.27 (Gin, Temporal SDK, gRPC/Protobuf, GORM + `pgx/v5`, HashiCorp Vault KV v2, `mcp-go`), Python 3.15 (`grpcio`, `sentence-transformers` `BAAI/bge-small-en-v1.5`, SQLAlchemy + `asyncpg`, `pgvector`, `aiokafka`, `scikit-learn`), PostgreSQL 16 + `pgvector`, Redpanda.
 
-## Overview & Motivation
-ARDA provides a shared Go runtime for multi-step AI agents requiring bounded tool access, versioned execution budgets, and durable workflow guarantees. It replaces fragile in-memory agent loops with immutable state checkpointing and human-in-the-loop review queues.
+## Overview & Problem Solved
+ARDA separates deterministic governance from probabilistic LLM reasoning across two dedicated services so autonomous agents can operate safely on high-stakes workflows such as financial transaction dispute adjudication:
+1. **`arda` (Go Control Plane & Execution Engine)**: Enforces JWT/RBAC identity, immutable published agent snapshots in PostgreSQL, HashiCorp Vault KV v2 BYOK credential custody, bounded multi-provider LLM execution (`AgentRuntime`), Draft-07 schema checks, Temporal durable workflows alongside realtime synchronous mode, and a 10-step `ToolGateway` mediating Model Context Protocol (MCP) calls.
+2. **`arda-reliability-service` (Python Hexagonal Reliability Gate)**: Evaluates proposed agent decisions over gRPC by embedding *only* the factual `case_description` via `BAAI/bge-small-en-v1.5` (384-d), querying tenant-scoped historical precedents in PostgreSQL `pgvector` HNSW space, scoring `Agreement × Density × Coverage` across a 6-stage fail-closed gate, and ingesting HMAC-SHA256-verified human feedback from Redpanda.
 
-## Key Architecture & Components
-1. **API Gateway & Access Control**: Tenant-aware gRPC / REST API with JWT authentication and role-based access control (RBAC).
-2. **Durable Workflow Orchestrator**: Uses the **Temporal** SDK to execute multi-step workflows. Every activity completion is persisted in a deterministic event history, ensuring workflows automatically resume from their last completed step after worker crashes or network timeouts.
-3. **Tool Governance Sandbox**: Enforces Model Context Protocol (MCP) tool integration with strict read vs write tool classification, deterministic business-rule guardrails, and JSON Schema validation for tool inputs and outputs.
-4. **Reliability & Confidence Scorer**: Implements retrieval-based reliability scoring with embeddings and **pgvector**, comparing agent responses against historic high-confidence reference solutions. Fails closed and routes ambiguous outputs to a human review queue.
-5. **Event Streaming & Datastore**: PostgreSQL 16 persistence for tenant configs, immutable execution traces, and audit logs. Redpanda / Kafka event streams driven by the Transactional Outbox pattern to prevent data drift.
+## Hard Engineering Constraints
+- **Tenant Isolation & Header Stripping**: Client-supplied `X-Tenant-ID` headers are stripped at `AuthenticateMiddleware` and execution edges. `tenant_id` is derived strictly from verified `HS256` JWT claims, re-checked in internal gRPC `x-tenant-id` metadata (`InternalAuthInterceptor`), scoped in Vault paths (`tenants/<tenant_id>/...` with path-traversal guards), and asserted per row in `pgvector` queries.
+- **Zero Plaintext Credential Persistence**: `checkForPlaintextCredentials` rejects raw API keys at agent registration; PostgreSQL stores only logical Vault pointers; `ProviderAdapter.GenerateWithCredential` avoids context key pollution; Vault `DestroySecret` purges metadata versions on deletion; and `RedactSensitiveData` + regex masking replace leaked keys with `[REDACTED]` in audit logs and upstream errors.
+- **Immutability & Write Idempotency**: Published `agent_versions` are locked at both service and PostgreSQL trigger layers (`trg_agent_versions_immutability`, raising SQLSTATE `P0001`). Executions pin an explicit `agent_version_id`. `Gateway.ExecuteTool` uses deterministic IDs (`DeriveInvocationID`), SHA-256 argument digests, and `IdempotencyLockManager` mutexes against `tool_invocations`.
+- **Fail-Closed Bounded Safety**: `BudgetTracker` caps defaults at `10` iterations, `20` tool calls, `50,000` tokens (`40k` prompt / `10k` completion), `64 KB` tool output, `256 KB` prompt context, and `1` consecutive identical call. Custom Draft-07 validation caps schemas at `64 KB` / depth `10` / `250`-char regex / `100k` evaluation steps and forbids remote `$ref`s. MCP endpoints block cloud metadata IPs (`169.254.169.254`, `metadata.google.internal`, `100.100.100.200`) against SSRF.
 
-## Engineering Decisions & Trade-Offs
-- **Temporal Durable Workflows over Ephemeral In-Memory Loops**: In-memory agent loops fail irrevocably when external LLM API calls time out or worker pods restart. Temporal persists every activity completion as a deterministic event history, enabling zero-loss recovery.
-- **Transactional Outbox Pattern for Redpanda**: Dual writes to Kafka and PostgreSQL introduce distributed consistency risks if the network fails between operations. The transactional outbox writes events to PostgreSQL atomically, where an outbox worker safely relays them to Redpanda.
-- **PostgreSQL + pgvector over SaaS Vector Store**: Colocates relational agent metadata, tenant configurations, and vector embeddings in a single ACID datastore, simplifying transactions, point-in-time recovery, and backups.
+## End-to-End Architecture & Modules
+1. **API Gateway (`services/gateway`, `cmd/gateway`)**: Gin HTTP edge (`:8000`) with request-ID logging, token-bucket rate limiting (`20 RPS`, burst `40`), `HS256` JWT verification, 4-role RBAC (`super_admin`, `company_admin`, `agent_developer`, `reviewer`), bcrypt identity management (`RegisterTenantWithAdmin` atomic transaction), and `bufconn`/network gRPC routing.
+2. **Agent Registry (`services/registry`, `cmd/registry`)**: gRPC (`AgentRegistryService`) + HTTP CRUD managing `agents` and immutable `agent_versions` in PostgreSQL, Vault credential references, and plaintext secret rejection.
+3. **Execution Service & Temporal (`services/execution`, `pkg/temporal`)**: Dispatches async durable workflows (`AgentExecutionWorkflow` -> `AgentExecutionActivity` on `arda-v1-task-queue`, `StartToCloseTimeout: 30s`, max 3 exponential attempts) returning `HTTP 202`, or synchronous realtime execution (`mode: "sync"`) returning `HTTP 200`.
+4. **Shared Bounded `AgentRuntime` (`pkg/agentruntime`)**: Renders versioned prompt templates, pulls short-lived BYOK API keys per call from HashiCorp Vault across 6 LLM adapters (OpenAI, Anthropic, Gemini, Groq, Grok, OpenRouter), enforces budgets, validates Draft-07 `OutputSchema`, and dispatches tool calls strictly through `ToolGateway`.
+5. **10-Step `ToolGateway` & MCP (`pkg/toolgateway`, `pkg/mcp`, `cmd/mcp-server`)**: Executes: (1) context validation -> (2) pinned config check -> (3) registry lookup/enabled -> (4) allowlist -> (5) Draft-07 `input_schema` -> (6) tenant isolation & auth hook -> (7) `CompositeGuardrail` (destructive-op + parameter-bounds) -> (8) `IdempotencyLockManager` mutex + SHA-256 digest -> (9) SSRF-checked MCP execution (`cmd/mcp-server` or in-process `TransactionSimulator`, `64 KB` output cap) -> (10) `AuditEvent` logging with `[REDACTED]` masking.
+6. **Reliability Scoring & gRPC Gate (`arda-reliability-service`)**: Hexagonal async Python service hosting `ReliabilityService.Gate` (`:50051`). Embeds factual narrative only via `BAAI/bge-small-en-v1.5`, runs HNSW cosine lookup (`m=16, ef_construction=64, ef_search=64`, `SET LOCAL hnsw.iterative_scan = strict_order`), computes `Agreement × Density × Coverage`, applies a 6-stage fail-closed gate, and keeps calibration deferred behind `UnavailableCalibrator` (`CalibratorPort`) until `N >= 1,000` live human adjudications.
+7. **Redpanda Human Feedback Consumer (`infrastructure/messaging/consumer.py`)**: Consumes `arda.human-resolutions.v1` with `aiokafka` (`enable_auto_commit=False`), verifies canonical 13-field HMAC-SHA256 Go/Python signatures with `key_id` rotation and `300s` replay window via `TrustedProducerAuthorizer`, screens bot `reviewer_id` strings, deduplicates on unique `event_id`, quarantines conflicting labels for the same `case_id` (`status = 'quarantined'`), commits atomically to `reference_examples` and `human_feedback_events`, and ensures synchronous DLQ publication (`arda.human-resolutions.dlq`) before committing Kafka offsets.
 
-## What Went Wrong & Lessons Learned
-- **Context Deadline Poisoning on gRPC Streaming Workers**: During stress tests with network jitter, agent tool workers leaked context timers because client cancellation signals did not propagate to nested Temporal activity child contexts. The fix was explicitly binding child contexts with `context.WithCancelCause` and listening on `<-ctx.Done()` in all MCP transport adapters.
-- **Key Takeaway**: Never assume context cancellation cascades implicitly across network protocol boundaries without verified propagation.
+## Key Architectural Decisions & Trade-Offs
+- **HTTP/JSON Public Gateway + Internal gRPC (`bufconn` support)**: Keeps REST ergonomics externally while enforcing typed `.proto` contracts (`AgentRegistryService`, `ReliabilityService`) and `x-tenant-id` metadata internally. `bufconn` lets local single-binary runs test real protobuf serialization and interceptors.
+- **PostgreSQL + `pgvector` HNSW over Dedicated Vector DB**: Co-locates `vector(384)` embeddings with relational scope and `human_feedback_events` for ACID commits across feedback ingestion and quarantine. `BAAI/bge-small-en-v1.5` (384-d) halves index memory versus `e5-base-v2` (768-d).
+- **Multiplicative Score (`Agreement × Density × Coverage`) & Deferred Calibration**: Enforces automatic zero-collapse vetoes on cold-start or twin conflict. Under strict 5-fold connected-group CV (`N=100` synthetic cases), raw ROC-AUC was `0.5352` and Platt scaling compressed outputs to `[0.4813, 0.5465]`; hence `UnavailableCalibrator` keeps `is_calibrated = false` until sufficient production volume accumulates, while Protobuf separates `raw_score` from `calibrated_confidence`.
+- **Dual Temporal/Sync Mode & Custom Bounded Draft-07 Engine**: Shares one `AgentRuntime` library between crash-resilient Temporal workflows and synchronous runs, while custom Draft-07 validation neutralizes remote `$ref` SSRF and regex ReDoS attacks.
 
+## Verified Benchmarks & Test Coverage
+- **Test Counts**: `272` Go test/benchmark functions across `pkg/...` and `services/...` (including Temporal workflow replay tests, `bufconn` integration, and `-race` targets) plus `213` Python test functions across `tests/` (`219 passed, 3 skipped`, with `ruff` and `mypy`).
+- **Go Tool Gateway Microbenchmarks** (`pkg/toolgateway/benchmarks_test.go`):
+  - `Benchmark_SuccessfulRead`: `~93.4 µs/op`, `28.4 KB/op`, `450 allocs/op`
+  - `Benchmark_SuccessfulWrite`: `~98.9 µs/op`, `31.2 KB/op`, `496 allocs/op`
+  - `Benchmark_GuardrailDenial`: `~11.7 µs/op`, `6.3 KB/op`, `64 allocs/op`
+- **`pgvector` HNSW Benchmarks** (Postgres 16.15 + pgvector v0.8.7, RTX 3060 GPU, `BAAI/bge-small-en-v1.5`, `N=10,000`):
+  - `99.4%` Recall@1, `98.8%` Recall@5, `98.2%` Recall@10, `0.75 ms` DB execution (vs `12.80 ms` exact scan), `11.8 ms` p50 total pipeline (`~9.5 ms` CUDA embedding).
+
+## Real Engineering Challenges Solved
+1. **Silent Zero-Row Truncation on Filtered `pgvector` HNSW Scans**: On a shared 12,650-row multi-tenant table, queries for a 1,000-row agent partition returned **0 rows (0.0% recall)** under default `hnsw.iterative_scan = off` because HNSW exhausted `ef_search` on other partitions. Setting `SET LOCAL hnsw.iterative_scan = strict_order` restored `99.1%` Recall@1 and `98.9%` Recall@5.
+2. **Go vs. Python Canonical JSON HMAC Mismatch**: Go's default `json.Marshal` HTML-escapes `<`, `>`, `&` (`\u003c`), breaking cross-language HMAC-SHA256 signatures against Python's `json.dumps(..., ensure_ascii=False)`. Resolved using `enc.SetEscapeHTML(false)` in Go, lexicographically sorting 13 canonical fields, and normalizing timestamps to UTC RFC3339 seconds.
+3. **Contrastive Twin Leakage in Cross-Validation**: Standard Leave-One-Out leaked counterfactual twins (`cosine >= 0.95`, opposite labels) across candidate pools (`0.1663` pair AUC), fixed with `ConnectedGroupAssigner` in 5-fold partitioned CV.
+4. **BYOK Context Pollution & Vault Soft-Delete Residuals**: Removed context-injected API keys in favor of explicit `GenerateWithCredential`, added Vault `DestroySecret` metadata purging, enforced OpenAI `o1`/`o3` reasoning parameter rules, and blocked non-JSON 200 responses.
+5. **Precedent Conflict Quarantine & DLQ Safety**: Opposing human labels on the same `case_id` trigger `status = 'quarantined'` (excluded from `status = 'active'` queries) without overwriting truth, and Kafka offsets only commit after atomic Postgres commit or synchronous `send_and_wait` DLQ confirmation.
+
+## Honest Implementation vs. Planned Roadmap Gaps
+- Production Kubernetes Deployments/HPA, dedicated standalone `Human Review`, `Notification` (WebSocket), and hash-chained `Audit Consumer` services, Transactional Outbox relays, OTel/Prometheus/Grafana/Loki/Tempo observability, and the React UI live in the platform architecture/scalability blueprint and separate upcoming repos.
+- In code, `cmd/gateway` already proxies `/api/v1/reliability/gate` to `ReliabilityService`, while injecting a gRPC `ReliabilityService` client into `LLMExecutor` inside `cmd/worker`/`cmd/execution` and auto-launching `RedpandaFeedbackConsumer` inside `serve()` remain in progress.
