@@ -1,6 +1,7 @@
 # Open Source Contribution: ORAS Go (OCI Registry as Storage)
 
-- **Repository**: `oras-project/oras-go` (Linux Foundation / CNCF sandbox project)
+- **Repository**: `oras-project/oras-go` (Linux Foundation / CNCF sandbox project) — https://github.com/oras-project/oras-go
+- **Pull Requests**: https://github.com/oras-project/oras-go/pulls?q=is%3Apr+state%3Aclosed+author%3Aaswinsreeraj
 - **Technology**: Go, OCI image specifications, Docker registries, content-addressable storage
 - **Context**: ORAS enables pushing and pulling arbitrary software artifacts (configurations, SBOMs, AI models, binaries) to and from OCI-compliant registries.
 
