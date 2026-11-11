@@ -15,7 +15,7 @@ Aswin's soft skills are backed by 3+ years of enterprise operations & compliance
    - **Proof**: ARDA & Portfolio Architecture Docs — Authored ADR-0001, REST/RBAC API docs v1, Scalability Plans, Service Communication diagrams, and HNSW & Calibration audit reports across ARDA microservices, alongside audit resolution reports at NatWest.
 
 5. **High-Bar Consistency & Peer Ownership (`Consistency & Growth`)**
-   - **Proof**: Brototype (Aug 2025 – Present, Overall Best Performer – June 2026) & Fanshawe College (President's Honour Roll & Dean's Honour Roll; four terms with term GPAs `4.04–4.2 / 4.2`) — Recognized for execution & peer community contributions while shipping ARDA, EVNTX, and Tenome Micro.
+   - **Proof**: Brototype (Aug 2025 – Present, Overall Best Performer – June 2026) & Fanshawe College (President's Honour Roll & Dean's Honour Roll; four terms, GPA `4.04 / 4.2`) — Recognized for execution & peer community contributions while shipping ARDA, EVNTX, and Tenome Micro.
 
 6. **Rapid Technical Adaptability (`Self-Directed Learning`)**
    - **Proof**: Embedded PIC -> Polyglot Backend Systems — Transitioned from Embedded C / PIC microcontrollers (`Fanshawe College`, `COMM-6027`/`COMM-6028`, `RTOS`) and banking compliance into shipping Go microservices, async Python `pgvector` systems, Temporal workflows, Kafka pipelines, Kubernetes/Helm & React SPAs.

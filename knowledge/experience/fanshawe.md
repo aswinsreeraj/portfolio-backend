@@ -4,7 +4,7 @@
 - **Credential**: Ontario College Graduate Certificate, Electronics & Embedded Systems
 - **Location**: London, Ontario, Canada
 - **Duration**: Jan 2023 – Aug 2024
-- **Academic Standing**: **President's Honour Roll & Dean's Honour Roll** (four terms; term GPAs `4.04–4.2 / 4.2`)
+- **Academic Standing**: **President's Honour Roll & Dean's Honour Roll** (four terms; GPA `4.04 / 4.2`)
 
 ## Program Focus & Coursework (Levels 1–4)
 The program's primary focus in embedded development was **PIC microchips** and **Embedded C programming**, along with brief introductory exposure to **Vue.js** and **React Native**:

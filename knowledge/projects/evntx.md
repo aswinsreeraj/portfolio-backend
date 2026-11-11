@@ -4,7 +4,6 @@
 - **Tagline**: Multi-Role Event Discovery, Concurrency-Safe Ticketing & Escrow Wallet Platform
 - **Status**: Completed (289 commits, 65+ PRs across Clean Architecture Go backend and React 19 TypeScript SPA)
 - **GitHub**: https://github.com/aswinsreeraj/evntx
-- **Live Demo**: https://evntx.aswinsreeraj.online (Vercel frontend + live CORS origins `evntx.aswinsreeraj.online` / `evntx-self.vercel.app`)
 - **Core Stack**: Go 1.25.5, Gin v1.12.0, GORM v1.31.1 + `pgx/v5`, PostgreSQL, Razorpay Go SDK v1.4.0, AWS SDK v2 S3, JWT (`HS256`) + Google OAuth, `robfig/cron/v3`, `zerolog`, React 19.2, TypeScript 5.9, TanStack Query v5, Zustand v5, Tailwind CSS v4, Recharts, `html5-qrcode`, Docker.
 
 ## Overview & Problem Solved

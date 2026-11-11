@@ -19,7 +19,7 @@ Aswin Sreeraj's journey is characterized by continuous learning, transitioning f
 ## Jan 2023 - Aug 2024: Fanshawe College
 - **Program**: Ontario College Graduate Certificate, Electronics & Embedded Systems
 - **Location**: London, Ontario, Canada
-- **Academic Standing**: **President's Honour Roll & Dean's Honour Roll** (four terms; term GPAs `4.04–4.2 / 4.2`).
+- **Academic Standing**: **President's Honour Roll & Dean's Honour Roll** (four terms; GPA `4.04 / 4.2`).
 - **Key Focus**: Primary focus on **PIC microchips** and **Embedded C programming**, covering Operating Systems, Systems Programming, RTOS, Embedded Network Protocols, Digital Logic, Telecommunications, and Web Interfaces for HMI (with brief beginner exposure to Vue.js and React Native).
 
 ## Mar 2022 - Dec 2022: Amazon
