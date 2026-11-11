@@ -22,17 +22,17 @@ Aswin Sreeraj's journey is characterized by continuous learning, transitioning f
 - **Academic Standing**: **President's Honour Roll & Dean's Honour Roll** (four terms; term GPAs `4.04–4.2 / 4.2`).
 - **Key Focus**: Primary focus on **PIC microchips** and **Embedded C programming**, covering Operating Systems, Systems Programming, RTOS, Embedded Network Protocols, Digital Logic, Telecommunications, and Web Interfaces for HMI (with brief beginner exposure to Vue.js and React Native).
 
-## 2022: Amazon
-- **Role**: Senior Compliance Associate / Quality Analyst
-- **Location**: Bangalore, Karnataka, India
-- **Focus**: High-volume regulatory compliance, risk assessment workflows, standard operating procedure (SOP) auditing, and cross-functional quality control.
-- **Value**: Developed rigorous attention to edge cases, data accuracy, and operational failure modes.
+## Mar 2022 - Dec 2022: Amazon
+- **Role**: Senior Product Compliance Associate (`Sr. Product Compliance Associate`)
+- **Location**: Bangalore, India
+- **Focus**: Product regulatory compliance, consumer safety vetting, SOP-based risk classification/restriction, proactive safety data monitoring, and cross-functional collaboration with legal, QA, and operations.
+- **Value**: Built rigorous discipline around policy enforcement, risk mitigation, edge-case detection, and structured governance.
 
-## 2019 - 2022: NatWest Group
-- **Role**: Customer Service & Operations Analyst (Commercial Banking)
-- **Location**: Delhi NCR, India
-- **Focus**: Financial transactions, payments processing, ledger reconciliation, fraud prevention, SLA management.
-- **Value**: Instilled deep appreciation for ACID transactions, idempotent payment records, and auditable ledger state.
+## Jan 2019 - Feb 2022: NatWest Group
+- **Role**: Operations Analyst
+- **Location**: Chennai, India
+- **Focus**: Multi-account bookkeeping reconciliation, chargeback discrepancy audits, fraud investigation and case reporting, transaction verification, and regulatory compliance.
+- **Value**: Instilled deep practical appreciation for ACID transactions, accurate ledger bookkeeping, and auditable state tracking.
 
 ## 2014 - 2018: Guru Gobind Singh Indraprastha University (GGSIPU)
 - **Degree**: Bachelor of Technology (B.Tech) in Electronics & Communication Engineering
