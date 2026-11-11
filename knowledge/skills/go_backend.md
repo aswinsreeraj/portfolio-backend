@@ -1,11 +1,15 @@
-# Technical Skills: Go & Backend Engineering
+# Technical Skills: Go & Backend Engineering (Verified Proof)
 
-## Core Competencies
-- **Go (Golang)**: Deep mastery of idiomatic Go (versions 1.21 - 1.23). Proficient in memory layouts, pointer semantics, slice reallocation internals, struct field alignment for memory padding optimization, and escape analysis (`go build -gcflags="-m"`).
-- **Concurrency & Primitives**: Goroutines, buffered and unbuffered channels, worker pools, fan-out/fan-in patterns, `sync.Mutex`, `sync.RWMutex`, `sync.WaitGroup`, `sync.Once`, `sync/atomic`, and `errgroup.Group`.
-- **Context & Lifecycle Management**: Context propagation (`context.Context`), timeout handling, cancellation trees, deadline enforcement, and context leak prevention.
-- **Clean Architecture & Design Patterns**: Domain-Driven Design (DDD), Separation of Concerns (Handler -> Service/Use Case -> Repository -> Entity), dependency injection without heavy reflection, interface segregation.
-- **RESTful APIs & Web Frameworks**: Gin framework, standard `net/http` server tuning (`ReadTimeout`, `WriteTimeout`, `IdleTimeout`), middleware authoring (rate-limiting, CORS, structured logging, recovery, request ID propagation).
-- **RPC & Protocols**: gRPC, Protocol Buffers (protobuf v3), streaming RPCs, Model Context Protocol (MCP).
-- **Testing & Benchmarking**: Table-driven unit tests, mock generators (`mockery` / interface stubbing), race condition detection (`go test -race`), CPU and memory profiling with `pprof`.
-
+## Core Backend Competencies & Proof
+- **Go (Golang)**: Built ARDA (13 Go modules across API gateway, agent registry, execution runtime, tool gateway, human review, notifications, and audit services), EVNTX (Clean Architecture REST monolith with Razorpay payments, atomic escrow wallets, and background schedulers), and Tenome Micro (`tenome-gateway`, `tenome-search`, `tenome-ai`, `tenome-notify`).
+- **Concurrency & Primitives**: Worker pools, bounded channels (`chan Job`), `sync.Mutex`, `sync.RWMutex`, `sync.WaitGroup`, `sync.Once`, `errgroup.Group`, and atomic operations (`atomic.Bool`, optimistic CAS updates). Proven via EVNTX's atomic seat reservations (`ReserveTickets` CAS + `FOR UPDATE` locks) and `tenome-search`'s 4-worker bounded crawl pool.
+- **Context & Lifecycle Management**: Propagated `context.Context`, timeouts, cancellation trees, and graceful shutdown sequences across HTTP/gRPC servers, SQL transactions, Temporal workers, and Redpanda consumers.
+- **Clean Architecture & Design Patterns**: Domain-Driven Design (DDD), clean separation (`Handler -> UseCase -> Repository -> Entity`), explicit constructor dependency injection, and interface-driven boundaries (`llm.Provider`, `storage`, `cache`, `notification.Sender`).
+- **RESTful APIs & Web Frameworks**: Gin framework and idiomatic `net/http` with IP token-bucket rate-limiting, HS256 JWT/RBAC enforcement (`tenant_id`, `role`), CORS, structured logging, request ID propagation, and timeout controls.
+- **gRPC & Protocol Buffers**: Polyglot `.proto` contracts (`arda/proto/arda/v1`) separating `raw_score` and optional `calibrated_confidence` across Go and async Python in ARDA (with `bufconn` local RPC mode and `InternalAuthInterceptor`), plus HTTP/2 gRPC transport (`search.proto`, `summary.proto`) with `otelgrpc` spans in Tenome Micro.
+- **Testing & Profiling Proof**:
+  - **ARDA**: 272 Go tests & benchmarks (`go test ./...`) + 219 Python `pytest` specs (`arda-reliability-service`, plus `pkg/toolgateway/benchmarks_test.go` measuring `~93.4 µs` read / `~98.9 µs` write / `~11.7 µs` guardrail denial and `0.75 ms` HNSW scans).
+  - **EVNTX**: Concurrent race tests (`go test -race -v ./internal/usecase/...`, 6/6 passing) + Postgres `AutoMigrate`/`TRUNCATE` integration suites + `pprof` DB connection pool tuning (`MaxOpenConns(25)`, `MaxIdleConns(10)`).
+  - **Tenome Micro**: GitHub Actions CI/CD pipelines, Kubernetes manifests, and Helm chart packaging.
+- **Security & Secrets Proof**: Vault KV v2 client for dynamic secrets & BYOK LLM key custody, AES-256-GCM bank/UPI encryption, bcrypt OTP & SHA-256 session hashing, cross-language Go/Python canonical HMAC-SHA256 verification (`SetEscapeHTML(false)`), Razorpay HMAC webhook verification, SSRF metadata-IP blocking (`169.254.169.254` & RFC1918 CIDRs), and SQL-trigger immutable SHA-256 hash-chained audit logs in ARDA.
+- **Embedded Foundation**: Fanshawe College Graduate Certificate (President's Honour Roll & Dean's Honour Roll across four terms, term GPAs `4.04–4.2 / 4.2`) focusing on Embedded C, PIC microcontrollers, Real-Time Operating Systems (RTOS), Operating Systems, and Systems Programming, complemented by a B.Tech in Electronics & Communication Engineering (GGSIPU).
