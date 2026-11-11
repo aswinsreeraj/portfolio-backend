@@ -2,7 +2,7 @@
 
 - **ID**: `arda`
 - **Tagline**: Multi-Tenant AI Agent Control Plane, Durable Execution Engine & Evidence-Based Reliability Gate
-- **Status**: In Progress (Core control plane, execution governance, Vault BYOK, Temporal workflows, and `pgvector` HNSW reliability gate implemented & tested; production K8s manifests, standalone review/audit consumers, and cross-repo production wiring in progress)
+- **Status**: In Progress (Core Go control plane [`arda`] and Python Reliability Service [`arda-reliability-service` — async gRPC gate, `BAAI/bge-small-en-v1.5` embeddings, `pgvector` HNSW `strict_order`, multiplicative 6-stage gate, and HMAC-SHA256 Redpanda feedback consumer] are completed & tested; dedicated **Human Review service** and **Frontend UI**—alongside standalone Notification/Audit consumers, transactional outbox relays, and production K8s wiring—are pending)
 - **GitHub Repositories**:
   - Go Platform (`arda`): https://github.com/aswinsreeraj/arda
   - Python Reliability Gate (`arda-reliability-service`): https://github.com/aswinsreeraj/arda-reliability-service
@@ -51,5 +51,6 @@ ARDA separates deterministic governance from probabilistic LLM reasoning across 
 5. **Precedent Conflict Quarantine & DLQ Safety**: Opposing human labels on the same `case_id` trigger `status = 'quarantined'` (excluded from `status = 'active'` queries) without overwriting truth, and Kafka offsets only commit after atomic Postgres commit or synchronous `send_and_wait` DLQ confirmation.
 
 ## Honest Implementation vs. Planned Roadmap Gaps
-- Production Kubernetes Deployments/HPA, dedicated standalone `Human Review`, `Notification` (WebSocket), and hash-chained `Audit Consumer` services, Transactional Outbox relays, OTel/Prometheus/Grafana/Loki/Tempo observability, and the React UI live in the platform architecture/scalability blueprint and separate upcoming repos.
-- In code, `cmd/gateway` already proxies `/api/v1/reliability/gate` to `ReliabilityService`, while injecting a gRPC `ReliabilityService` client into `LLMExecutor` inside `cmd/worker`/`cmd/execution` and auto-launching `RedpandaFeedbackConsumer` inside `serve()` remain in progress.
+- **Completed Services (`arda` + `arda-reliability-service`)**: The Go control plane/execution engine (Gateway, gRPC Registry, Execution Service, Temporal workflows, shared `AgentRuntime`, Vault KV v2 BYOK, 10-step `ToolGateway` + MCP) and the hexagonal Python Reliability Service (`ReliabilityService.Gate` over gRPC, `BAAI/bge-small-en-v1.5` embeddings, `pgvector` HNSW `strict_order` retrieval, 6-stage fail-closed gating, and HMAC-SHA256 Redpanda feedback consumer) are completed and verified (`272` Go tests + `219` passing Python tests).
+- **Pending Work**: The dedicated **Human Review service** (reviewer queue, assignment, and resolution UI workflows) and **Frontend UI** remain pending, alongside standalone `Notification` (WebSocket) and hash-chained `Audit Consumer` binaries, Transactional Outbox relays, Kubernetes Deployments/HPA, and OTel/Prometheus/Grafana/Loki/Tempo observability shown in the architecture/scalability blueprint.
+- **In-Repo Integration Remaining**: `cmd/gateway` already proxies `/api/v1/reliability/gate` to `ReliabilityService`, while wiring a gRPC `ReliabilityService` client directly into `LLMExecutor` inside `cmd/worker`/`cmd/execution` and auto-launching `RedpandaFeedbackConsumer` inside `serve()` remain in progress.
