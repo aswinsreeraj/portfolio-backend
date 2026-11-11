@@ -13,3 +13,8 @@ Aswin Sreeraj is a backend engineer from Kerala, India, focused on building reli
 
 Aswin focuses on concurrency safety, escrow and wallet integrity, fail-closed agent governance, and distributed observability with Temporal, PostgreSQL (`pgvector`), Kafka/Redpanda, and OpenTelemetry. To stay informed across software engineering, AI, business, and current affairs, he follows Think School, Fireship, Aevy TV, CultRepo, The Batch (DeepLearning.AI), and The Go Blog.
 
+## Self-Introduction & Backend Engineer Role Fit
+- **Quick Self-Intro**: Aswin Sreeraj is a Go & Python backend engineer from Kerala, India, who pairs Clean Architecture REST/gRPC systems engineering with 3+ years of fraud investigation and SOP compliance experience from NatWest Group and Amazon.
+- **Why Fit for Backend Developer Roles**: Proven ownership across transactional financial ledgers (`FOR UPDATE` row locks, optimistic CAS reservations, Razorpay auto-refunds in EVNTX), durable distributed orchestration (`Temporal`, 10-step MCP `ToolGateway`, Vault BYOK, `pgvector` HNSW gating with 272 Go + 219 Python tests in ARDA), and Go event-driven microservices (`Kafka`, `Dragonfly`, `Ollama`, OpenTelemetry in Tenome Micro). Also brings `go test -race` and `pprof` debugging habits plus clear ADR/API documentation.
+- **Team Collaboration & Availability**: Worked directly across legal, QA, and operations at Amazon and audit teams at NatWest Group. Immediately available for full-time Backend / Go Engineer roles from Kerala, India (open to remote work or relocation).
+
