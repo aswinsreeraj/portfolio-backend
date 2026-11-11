@@ -1,7 +1,7 @@
 # Education: Brototype — Software Engineering Program (Go & Backend)
 
 - **Category**: Education / Project-Based Software Engineering Program
-- **Institution**: Brototype (Kochi, Kerala, India)
+- **Institution**: Brototype (Kerala, India)
 - **Duration**: **August 2025 – Present (Ongoing)**
 - **Recognition**: Awarded **Overall Best Performer for the month of June 2026** (monthly recognition for technical execution, architecture design, and community contributions—course is still ongoing).
 
