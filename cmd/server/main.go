@@ -39,6 +39,7 @@ func main() {
 	// 1. Database Connection
 	pgPort, _ := strconv.Atoi(getEnv("POSTGRES_PORT", "5433"))
 	dbCfg := database.Config{
+		URL:      getEnv("DATABASE_URL", ""),
 		Host:     getEnv("POSTGRES_HOST", "127.0.0.1"),
 		Port:     pgPort,
 		User:     getEnv("POSTGRES_USER", "arda_user"),

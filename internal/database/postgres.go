@@ -12,6 +12,7 @@ import (
 
 // Config holds Postgres connection options
 type Config struct {
+	URL      string
 	Host     string
 	Port     int
 	User     string
@@ -22,10 +23,13 @@ type Config struct {
 
 // ConnectPostgres establishes a database connection pool with health check
 func ConnectPostgres(cfg Config) (*sql.DB, error) {
-	connStr := fmt.Sprintf(
-		"host=%s port=%d user=%s password=%s dbname=%s sslmode=%s connect_timeout=5",
-		cfg.Host, cfg.Port, cfg.User, cfg.Password, cfg.DBName, cfg.SSLMode,
-	)
+	connStr := cfg.URL
+	if connStr == "" {
+		connStr = fmt.Sprintf(
+			"host=%s port=%d user=%s password=%s dbname=%s sslmode=%s connect_timeout=5",
+			cfg.Host, cfg.Port, cfg.User, cfg.Password, cfg.DBName, cfg.SSLMode,
+		)
+	}
 
 	db, err := sql.Open("postgres", connStr)
 	if err != nil {
@@ -43,7 +47,11 @@ func ConnectPostgres(cfg Config) (*sql.DB, error) {
 		return nil, fmt.Errorf("failed to ping postgres: %w", err)
 	}
 
-	slog.Info("PostgreSQL connection established successfully", "host", cfg.Host, "port", cfg.Port, "db", cfg.DBName)
+	if cfg.URL != "" {
+		slog.Info("PostgreSQL connection established successfully via DATABASE_URL")
+	} else {
+		slog.Info("PostgreSQL connection established successfully", "host", cfg.Host, "port", cfg.Port, "db", cfg.DBName)
+	}
 	return db, nil
 }
 
