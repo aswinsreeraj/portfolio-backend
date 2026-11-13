@@ -70,6 +70,9 @@ func (s *ChatService) ProcessChat(ctx context.Context, req domain.ChatRequest) (
 		return nil, fmt.Errorf("response generation failed: %w", err)
 	}
 
+	// Guarantee response is strictly 100 words or fewer
+	answer = trimToWordLimit(answer, 100)
+
 	// 5. Build unique citation list
 	seenDocs := make(map[string]bool)
 	var filteredCitations []domain.SourceCitation
@@ -88,3 +91,28 @@ func (s *ChatService) ProcessChat(ctx context.Context, req domain.ChatRequest) (
 		Mode:           mode,
 	}, nil
 }
+
+// trimToWordLimit ensures that response answers strictly obey the 100-word ceiling
+// by trimming cleanly at the nearest natural sentence boundary.
+func trimToWordLimit(text string, maxWords int) string {
+	words := strings.Fields(text)
+	if len(words) <= maxWords {
+		return text
+	}
+
+	truncated := strings.Join(words[:maxWords], " ")
+	lastPunct := -1
+	for i := len(truncated) - 1; i >= int(float64(len(truncated))*0.7); i-- {
+		ch := truncated[i]
+		if (ch == '.' || ch == '!' || ch == '?') && (i == len(truncated)-1 || truncated[i+1] == ' ' || truncated[i+1] == '\n') {
+			lastPunct = i
+			break
+		}
+	}
+
+	if lastPunct != -1 {
+		return truncated[:lastPunct+1]
+	}
+	return truncated + "..."
+}
+

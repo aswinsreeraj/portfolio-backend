@@ -42,6 +42,7 @@ type openAIChatRequest struct {
 	Model       string              `json:"model"`
 	Messages    []openAIChatMessage `json:"messages"`
 	Temperature float32             `json:"temperature"`
+	MaxTokens   int                 `json:"max_tokens,omitempty"`
 }
 
 type openAIChatResponse struct {
@@ -76,6 +77,7 @@ func (p *OpenAILLMProvider) GenerateResponse(ctx context.Context, systemPrompt s
 		Model:       p.model,
 		Messages:    apiMessages,
 		Temperature: 0.2,
+		MaxTokens:   250,
 	}
 
 	jsonData, err := json.Marshal(reqBody)

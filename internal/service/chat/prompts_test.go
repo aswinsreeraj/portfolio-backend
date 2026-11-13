@@ -29,3 +29,31 @@ func TestGetSystemPromptForMode(t *testing.T) {
 	}
 }
 
+func TestTrimToWordLimit(t *testing.T) {
+	short := "This is a brief response under ten words."
+	if got := trimToWordLimit(short, 100); got != short {
+		t.Errorf("expected short text untouched, got %q", got)
+	}
+
+	// 120 words with sentence boundary
+	var words []string
+	for i := 0; i < 90; i++ {
+		words = append(words, "word")
+	}
+	words = append(words, "ended.")
+	for i := 0; i < 30; i++ {
+		words = append(words, "extra")
+	}
+	long := strings.Join(words, " ")
+
+	trimmed := trimToWordLimit(long, 100)
+	wordCount := len(strings.Fields(trimmed))
+	if wordCount > 100 {
+		t.Errorf("expected <= 100 words, got %d", wordCount)
+	}
+	if !strings.HasSuffix(trimmed, "ended.") {
+		t.Errorf("expected clean sentence punctuation cutoff, got %q", trimmed)
+	}
+}
+
+

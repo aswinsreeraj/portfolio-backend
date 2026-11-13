@@ -88,7 +88,7 @@ func (p *GeminiLLMProvider) GenerateResponse(ctx context.Context, systemPrompt s
 			MaxOutputTokens int     `json:"maxOutputTokens"`
 		}{
 			Temperature:     0.2, // low temperature for grounded facts
-			MaxOutputTokens: 1024,
+			MaxOutputTokens: 250, // Capped to guarantee answers remain under 100 words
 		},
 	}
 
