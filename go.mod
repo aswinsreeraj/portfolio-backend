@@ -1,6 +1,6 @@
 module github.com/aswin/portfolio-rag
 
-go 1.27.2
+go 1.24
 
 require (
 	github.com/bytedance/gopkg v0.1.4 // indirect
