@@ -1,17 +1,24 @@
-# Education: Brototype — Software Engineering Program (Go & Backend)
+# Experience: Brototype — Full-Stack Software Engineering Intern (Go & React)
 
-- **Category**: Education / Project-Based Software Engineering Program
-- **Institution**: Brototype (Kerala, India)
-- **Duration**: **August 2025 – Present (Ongoing)**
-- **Recognition**: Awarded **Overall Best Performer for the month of June 2026** (monthly recognition for technical execution, architecture design, and community contributions—course is still ongoing).
+- **Category**: Professional Experience / Software Engineering Internship
+- **Organization**: Brototype (Kochi, Kerala)
+- **Role**: Full-Stack Software Engineering Intern (Go & React)
+- **Duration**: **August 2025 – Present (Active)**
+- **Recognition**: Awarded **Overall Best Performer for the month of June 2026** (monthly recognition for technical performance, architecture design, and community contribution).
+
+## Key Responsibilities & Achievements
+- Developed three core projects spanning AI agent governance (ARDA), event ticketing and escrow wallets (EVNTX), and distributed search and web crawling (Tenome Micro).
+- Built REST APIs with Go, Gin, and PostgreSQL and developed React and TypeScript interfaces. Practised client-side routing, Redux state management, and form validation.
+- Wrote Go unit tests and automated checks with GitHub Actions. Containerised Go services with Docker, deployed applications to AWS EC2, and practised Jenkins pipelines and Kubernetes deployments.
+- Awarded Overall Best Performer for June 2026 for technical execution, architecture quality, and community contribution.
 
 ## Capstone Engineering Systems Built at Brototype
-Within the Brototype curriculum itself, Aswin architected and built three flagship backend and full-stack platforms:
+Within the Brototype internship, Aswin architected and built three flagship backend and full-stack platforms:
 1. **ARDA (`arda` + `arda-reliability-service`)**: Multi-tenant AI agent control plane and governance platform across Go (`Gin`, `gRPC`, Temporal workflows, HashiCorp Vault KV v2 BYOK custody, custom Draft-07 validation, 10-step `ToolGateway` + MCP) and Python (`BAAI/bge-small-en-v1.5`, PostgreSQL `pgvector` HNSW gating with `iterative_scan = strict_order`, HMAC-SHA256 Redpanda feedback consumer).
 2. **EVNTX (`evntx`)**: Full-stack multi-role event discovery, ticketing & escrow wallet platform (`Go`, Clean Architecture, `Gin`, `PostgreSQL`/`GORM`, `React 19`/`TypeScript`), featuring optimistic CAS tier reservations (`1`-minute hold), `FOR UPDATE` multi-bucket escrow ledgers & single-use QR check-ins (`html5-qrcode`), automatic late-capture Razorpay refunds, AES-256-GCM encrypted payouts, and cron lifecycle workers.
 3. **Tenome Micro (`tenome-micro`)**: 4-module event-driven Go microservices platform (`tenome-gateway`, `tenome-search`, `tenome-ai`, `tenome-notify`) with Gin REST -> gRPC translation, bounded `100`-slot / `4`-worker HTML crawl engine, pure-Go SQLite `ON CONFLICT` persistence, Dragonfly `5m` caching, Kafka claim-check choreography, local Ollama inference (`qwen2.5:0.5b`), jittered DLT retries, full OpenTelemetry (`Tempo`/`Prometheus`/`Loki`/`Grafana Alloy`), and Kubernetes/Helm manifests.
 
-## Weekly Curriculum & Technical Training Covered at Brototype
+## Technical Curriculum & Skills Practiced at Brototype
 - **Algorithmic Foundations & Java OOP**: 1D arrays (insertion, deletion, traversal, in-place reversal, merging, frequency, primes); Java classes/objects, `static`/`this`/`super`, single/multilevel/hierarchical Inheritance, Polymorphism (overloading/overriding), Encapsulation, Abstraction (`abstract` classes & interfaces), Exception Handling (`try`/`catch`/`finally`), Bank Account Management CLI.
 - **Web & Frontend Engineering**: Semantic HTML5, CSS Box Model, selectors, Flexbox, CSS Grid, transitions/hover animations, Bootstrap, Tailwind CSS, responsive design (6-page responsive site >90 Lighthouse); JavaScript internals (hoisting, closures, TDZ, `this`, promises, `async/await`, event loop, DOM, Fetch API, debouncing/throttling, To-Do & Weather apps); React + Vite (`useState`/`useEffect`/`useRef`/`useContext`/`useMemo`/`useCallback`), React Router, Custom Hooks, HOCs, Firebase Auth + Firestore Blog app, Redux + Thunk + React Hook Form + Error Boundaries (`OLX`-style Go/Gin/Postgres + React/Redux e-commerce app), Zustand, and MobX.
 - **Linux, Go Core, Clean Architecture & Design Patterns**: Unix paths, `chmod`/`chown`/`ps`/`top`/`kill`, Go toolchain (`go mod`, pointers, structs, slices, maps, interfaces/type switches, custom error wrapping, file I/O); goroutines, buffered/unbuffered channels, worker pools, `sync.WaitGroup`, `sync.Mutex`, Go memory model & GC, `panic`/`recover` vs `log.Fatal`; `Gin` SSR/REST servers with bcrypt password hashing and separate user/admin HTTP-only sessions; `GORM` associations/hooks/preloading; structured logging (`log/slog`, `Zerolog`, `Zap`, `Logrus`); Git workflows (branching, rebasing, cherry-picking, stashes); **Clean Architecture**; Go Design Patterns (Singleton, Factory, Builder, Prototype, Adapter, Decorator, Proxy, Facade, Composite, Bridge, Flyweight, Strategy, Observer, Command, State, Mediator, Chain of Responsibility); Go unit testing, dependency mocking & GitHub Actions CI.

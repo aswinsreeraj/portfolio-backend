@@ -6,11 +6,18 @@ Aswin Sreeraj's journey is characterized by continuous learning, transitioning f
 - **Focus**: High-throughput distributed backend engineering roles focusing on Go, microservices, high-volume transactions, and AI agent platforms.
 - **Looking For**: Teams solving challenging scaling, consistency, and reliability problems.
 
-## Aug 2025 - Present (Ongoing Education): Software Engineering Program (Go & Backend) · Brototype
-- **Category**: Education (Ongoing Program started August 2025)
-- **Recognition**: Awarded **Overall Best Performer for the month of June 2026** for technical execution, architecture quality, and community contributions (monthly recognition during the ongoing program).
-- **Curriculum Focus**: Algorithmic & Java OOP foundations, HTML/CSS/Tailwind/JS & React/Redux/Zustand frontend engineering, Linux & Git, Go concurrency & Clean Architecture, Go design patterns, unit testing/mocking, Blind 75 DSA, PostgreSQL/MongoDB/SQLite internals (ACID, CTEs, window functions, row locking, `EXPLAIN`, sharding), GraphQL (`gqlgen`), Kafka/RabbitMQ/NATS, AWS, Jenkins/SonarQube/GitHub Actions, Docker, Microservices, and Kubernetes + Helm + Prometheus/Grafana/OpenTelemetry.
-- **Flagship Projects Built Within Brototype**:
+## Aug 2025 - Present (Professional Experience): Full-Stack Software Engineering Intern (Go & React) · Brototype
+- **Category**: Professional Experience (Internship, started August 2025 – Present)
+- **Role**: Full-Stack Software Engineering Intern (Go & React)
+- **Location**: Kochi, Kerala
+- **Recognition**: Awarded **Overall Best Performer for the month of June 2026** for technical execution, architecture quality, and community contributions.
+- **Key Responsibilities & Achievements**:
+  - Developed three core projects spanning AI agent governance (ARDA), event ticketing (EVNTX), and distributed search & web crawling (Tenome Micro).
+  - Built REST APIs with Go, Gin, and PostgreSQL and developed React and TypeScript interfaces with client-side routing, Redux state management, and form validation.
+  - Wrote Go unit tests and automated CI checks with GitHub Actions; containerized Go services with Docker, deployed applications to AWS EC2, and practiced Jenkins pipelines and Kubernetes deployments.
+  - Named Overall Best Performer in June 2026 for technical performance and community contribution.
+- **Curriculum & Systems Focus**: Algorithmic & Java OOP foundations, HTML/CSS/Tailwind/JS & React/Redux/Zustand frontend engineering, Linux & Git, Go concurrency & Clean Architecture, Go design patterns, unit testing/mocking, Blind 75 DSA, PostgreSQL/MongoDB/SQLite internals (ACID, CTEs, window functions, row locking, `EXPLAIN`, sharding), GraphQL (`gqlgen`), Kafka/RabbitMQ/NATS, AWS, Jenkins/SonarQube/GitHub Actions, Docker, Microservices, and Kubernetes + Helm + Prometheus/Grafana/OpenTelemetry.
+- **Flagship Projects Built**:
   - **ARDA**: Multi-tenant AI agent control plane & reliability gate (Go + Python) with Temporal durable workflows, Vault KV v2 BYOK custody, 10-step MCP tool guardrails, and `pgvector` HNSW gating.
   - **EVNTX**: Multi-role event ticketing & escrow wallet platform preventing overselling via optimistic CAS, `FOR UPDATE` locks, and automatic Razorpay late-capture refunds.
   - **Tenome Micro**: 4-service Go/gRPC/Kafka microservices platform combining crawl workers, Dragonfly cache, SQLite persistence, Ollama inference, DLT retries, and full OTel tracing.
